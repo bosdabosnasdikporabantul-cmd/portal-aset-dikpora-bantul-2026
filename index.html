@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTAL LAPORAN BMD & REALISASI ANGGARAN TAHUN 2026 - DIKPORA BANTUL</title>
+    <!-- SheetJS Library for client-side Excel parsing (.xlsx / .xls) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-sidebar: #072b42;
+            --bg-sidebar-dark: #031c2d;
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --accent-gold: #f4d03f;
+            --accent-gold-hover: #e5be26;
+            --text-dark: #0c2738;
+            --text-muted: #486581;
+            
+            --list-ocean: #0096c7;
+            --list-ocean-deep: #023e8a;
+            --list-ocean-light: #38bdf8;
+            --list-ocean-soft: rgba(56, 189, 248, 0.4);
+            --list-ocean-glow: rgba(0, 150, 199, 0.25);
+            --card-bg: #ffffff;
+            --drive-green: #0f9d58;
+            --drive-blue: #4285f4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #2b4c59;
+            background-image: linear-gradient(rgba(7, 43, 66, 0.12), rgba(7, 43, 66, 0.24)), url('https://wallpaperaccess.com/full/1739346.jpg');
+            background-repeat: no-repeat;
+            background-position: center 65%;
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            padding: 10px clamp(16px, 3.5vw, 42px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px var(--list-ocean-glow);
+            border-bottom: 3.5px solid var(--list-ocean-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 76px;
+            height: 76px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
+            border: 2.5px solid var(--list-ocean-light);
+            padding: 4px;
+        }
+
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+        }
+
+        .header-titles {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title-subtext {
+            font-size: 0.8rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #023e8a;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
+        }
+
+        .title-divider {
+            width: 3px;
+            height: 50px;
+            background: linear-gradient(180deg, var(--list-ocean-deep), var(--list-ocean-light));
+            border-radius: 2px;
+        }
+
+        .main-heading h1 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #042940;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+
+        .main-heading h2 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--list-ocean);
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .main-heading p {
+            font-size: 0.78rem;
+            color: #33658a;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cloud-badge-btn {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1.5px solid #86efac;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .cloud-badge-btn:hover {
+            background: #dcfce7;
+            transform: translateY(-1px);
+        }
+
+        .konoha-symbol {
+            width: 50px;
+            height: 50px;
+            fill: #0077b6;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .konoha-symbol:hover {
+            transform: scale(1.08) rotate(5deg);
+        }
+
+        /* CONTAINER */
+        .container {
+            width: min(1560px, 97%);
+            margin: 22px auto 36px;
+            display: grid;
+            grid-template-columns: 325px minmax(0, 1fr);
+            gap: 22px;
+            align-items: start;
+            flex: 1;
+        }
+
+        /* SIDEBAR DILENGKAPI SCROLL */
+        .sidebar {
+            background: linear-gradient(180deg, rgba(7, 43, 66, 0.98) 0%, rgba(3, 28, 45, 0.99) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 16px 12px 22px;
+            box-shadow: 0 12px 32px rgba(2, 28, 46, 0.5);
+            display: flex;
+            flex-direction: column;
+            color: white;
+            position: sticky;
+            top: 95px;
+            max-height: calc(100vh - 115px);
+            overflow-y: auto;
+            border: 1.8px solid var(--list-ocean-soft);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(3, 28, 45, 0.6);
+            border-radius: 4px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--list-ocean);
+            border-radius: 4px;
+        }
+
+        .sidebar-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            width: 100%;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            background: rgba(255, 255, 255, 0.06);
+            color: #f0f9ff;
+            padding: 11px 12px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--list-ocean-light);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background: var(--accent-gold);
+            color: #031c2d;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(244, 208, 63, 0.38);
+            border-color: var(--accent-gold);
+        }
+
+        .nav-item.active .menu-icon,
+        .nav-item.active .chevron-icon {
+            fill: #031c2d;
+            color: #031c2d;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            line-height: 1.3;
+        }
+
+        .menu-icon {
+            width: 18px;
+            height: 18px;
+            fill: #bae6fd;
+            flex-shrink: 0;
+        }
+
+        .chevron-icon {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            transition: transform 0.2s;
+        }
+
+        .sub-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 4px 0 6px 8px;
+        }
+
+        .sub-menu.hide {
+            display: none;
+        }
+
+        .sub-group-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #7dd3fc;
+            letter-spacing: 0.5px;
+            padding: 6px 6px 2px;
+            text-transform: uppercase;
+            border-top: 1px dashed rgba(56, 189, 248, 0.2);
+            margin-top: 4px;
+        }
+
+        .sub-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .sub-item:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: var(--list-ocean-light);
+            color: #fff;
+            transform: translateX(2px);
+        }
+
+        .sub-item.active {
+            background: #0284c7;
+            color: #ffffff;
+            font-weight: 800;
+            border: 1.5px solid #38bdf8;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.45);
+        }
+
+        .sub-item-nested {
+            padding-left: 14px;
+            font-size: 0.74rem;
+            border-left: 2px solid var(--list-ocean-light);
+        }
+
+        .sidebar-dikpora-badge-container {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(3, 22, 36, 0.7);
+            border: 1.5px solid var(--list-ocean-soft);
+            border-radius: 14px;
+            padding: 12px 8px 14px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+        }
+
+        .badge-logo-img {
+            width: 75px;
+            height: 95px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 3px 6px rgba(0, 150, 199, 0.3));
+        }
+
+        .badge-text-title {
+            font-size: 0.88rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .badge-text-subtitle {
+            font-size: 0.72rem;
+            font-weight: 700;
+            font-style: italic;
+            color: #38bdf8;
+            margin-top: 2px;
+            text-align: center;
+        }
+
+        .badge-divider {
+            width: 80%;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+            margin: 6px 0;
+        }
+
+        .badge-text-year {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #e0f2fe;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        /* MAIN CONTENT */
+        .content-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 28px clamp(20px, 2.5vw, 36px);
+            box-shadow: 0 12px 36px var(--list-ocean-glow);
+            border: 2.5px solid var(--list-ocean-light);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .section-folder-icon {
+            width: 32px;
+            height: 32px;
+            fill: var(--list-ocean);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .section-title h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #042940;
+        }
+
+        .section-title p {
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .folder-tab-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #e0f2fe;
+            padding-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .folder-tab-btn {
+            background: #f0f9ff;
+            color: #0284c7;
+            border: 1.5px solid #bae6fd;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+
+        .folder-tab-btn:hover {
+            background: #e0f2fe;
+            border-color: #38bdf8;
+        }
+
+        .folder-tab-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
+        .info-box {
+            background: #f0f9ff;
+            border: 1.5px solid var(--list-ocean-light);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 22px;
+        }
+
+        .info-icon {
+            width: 22px;
+            height: 22px;
+            fill: var(--list-ocean);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .info-content h5 {
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #023e8a;
+            margin-bottom: 5px;
+        }
+
+        .info-content ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .info-content li {
+            font-size: 0.8rem;
+            color: #03045e;
+            position: relative;
+            padding-left: 14px;
+        }
+
+        .info-content li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: var(--list-ocean);
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .action-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-upload-drive {
+            background: linear-gradient(135deg, #0f9d58 0%, #0b8043 100%);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(15, 157, 88, 0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-upload-drive:hover {
+            background: linear-gradient(135deg, #0b8043 0%, #086334 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-sync-cloud {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-sync-cloud:hover { background: #0369a1; }
+
+        .action-right-stats {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #023e8a;
+            background: #e0f2fe;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1.5px solid var(--list-ocean-light);
+            font-weight: 600;
+        }
+
+        .document-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .empty-grid-card {
+            grid-column: 1 / -1;
+            padding: 42px 20px;
+            text-align: center;
+            background: #f8fbfa;
+            border: 2px dashed var(--list-ocean-light);
+            border-radius: 16px;
+            color: #486581;
+        }
+
+        .empty-grid-card svg {
+            width: 44px;
+            height: 44px;
+            fill: var(--list-ocean-light);
+            margin-bottom: 10px;
+        }
+
+        .empty-grid-card h4 {
+            font-size: 1.05rem;
+            color: #042940;
+            margin-bottom: 4px;
+        }
+
+        .doc-card {
+            background: #ffffff;
+            border: 1.5px solid var(--list-ocean-light);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--list-ocean-glow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0, 150, 199, 0.3);
+            border-color: var(--list-ocean-deep);
+        }
+
+        .doc-preview {
+            height: 140px;
+            background: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1.5px solid var(--list-ocean-light);
+            position: relative;
+            padding: 10px;
+        }
+
+        .source-pill-drive {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #0f9d58;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2.5px 7px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .doc-paper-look {
+            width: 95px;
+            height: 115px;
+            background: white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            gap: 5px;
+            transform: rotate(-1deg);
+        }
+
+        .excel-sheet-look {
+            width: 105px;
+            height: 118px;
+            background: white;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+            border: 1.5px solid #0284c7;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            padding: 6px;
+            gap: 4px;
+        }
+
+        .excel-sheet-header {
+            background: #0284c7;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 4px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .excel-sheet-grid {
+            border: 1px solid #cbd5e1;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 18px 1fr 1fr;
+            grid-template-rows: repeat(5, 1fr);
+            gap: 1px;
+            background: #cbd5e1;
+        }
+
+        .excel-sheet-grid div { background: white; }
+        .excel-sheet-grid .header-cell { background: #e2e8f0; }
+
+        .paper-line {
+            height: 4px;
+            background: #bae6fd;
+            border-radius: 2px;
+            width: 100%;
+        }
+
+        .paper-line.short { width: 60%; }
+        .paper-line.accent { background: #e11d48; }
+
+        .doc-info {
+            padding: 12px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .doc-header-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin-bottom: 6px;
+        }
+
+        .pdf-badge {
+            width: 24px;
+            height: 24px;
+            background: #e11d48;
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.58rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .excel-badge {
+            width: 24px;
+            height: 24px;
+            background: #107c41;
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.54rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .doc-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #0c2738;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .doc-meta {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            margin-left: 33px;
+        }
+
+        .doc-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+            margin-top: auto;
+        }
+
+        .btn-act {
+            border: none;
+            padding: 7px 4px;
+            border-radius: 7px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .btn-act:hover { opacity: 0.9; }
+
+        .btn-view-drive { background: #0f9d58; color: white; }
+        .btn-download { background: #023e8a; color: white; }
+        .btn-delete { background: #ef4444; color: white; }
+
+        /* MODAL POPUP */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 25, 41, 0.75);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: min(580px, 100%);
+            border-radius: 18px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+            border: 2.5px solid var(--list-ocean-light);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #072b42 0%, #031c2d 100%);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h4 {
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: #bae6fd;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 22px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #072b42;
+        }
+
+        .form-control {
+            border: 1.5px solid #bae6fd;
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 0.84rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .modal-footer {
+            padding: 14px 20px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+
+        .btn-save-drive {
+            background: #0f9d58;
+            color: white;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+        .btn-save-drive:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* MODAL PREVIEW DRIVE */
+        .preview-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 25, 41, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 1100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .preview-modal-box {
+            background: white;
+            width: min(1200px, 98%);
+            height: 90vh;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 2px solid var(--list-ocean-light);
+        }
+
+        .preview-modal-header {
+            background: #072b42;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-modal-header h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preview-iframe-wrapper {
+            flex: 1;
+            width: 100%;
+            background: #f1f5f9;
+        }
+
+        .preview-iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* WIDGET KONTROL BACKGROUND */
+        .bg-control-widget {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            background: rgba(7, 43, 66, 0.95);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+            z-index: 999;
+            border: 1.5px solid var(--list-ocean-light);
+        }
+
+        .bg-control-widget select {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid var(--list-ocean-light);
+            color: white;
+            border-radius: 6px;
+            padding: 3px 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .bg-control-widget select option {
+            background: #072b42;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 18px;
+            color: #ffffff;
+            font-size: 0.8rem;
+            background: rgba(7, 43, 66, 0.97);
+            border-top: 3.5px solid var(--list-ocean-light);
+            margin-top: auto;
+        }
+
+        @media(max-width: 992px) {
+            .container { grid-template-columns: 1fr; }
+            .sidebar { position: static; max-height: none; }
+            .document-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media(max-width: 640px) {
+            .header-titles { display: none; }
+            .document-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo-box" id="logoContainer" title="Lambang Resmi Dinas Dikpora Kabupaten Bantul">
+                <img id="headerBantulLogo" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Seal_of_Bantul_Regency.svg/500px-Seal_of_Bantul_Regency.svg.png" 
+                     alt="Lambang Dikpora Kabupaten Bantul"
+                     onerror="fallbackLogoHeader(this)">
+            </div>
+            <div class="header-titles">
+                <div class="title-subtext">
+                    DINAS PENDIDIKAN<br>
+                    KEPEMUDAAN DAN OLAHRAGA<br>
+                    KABUPATEN BANTUL
+                </div>
+                <div class="title-divider"></div>
+            </div>
+            <div class="main-heading">
+                <h1>PORTAL LAPORAN BMD & REALISASI ANGGARAN</h1>
+                <h2>TAHUN 2026</h2>
+                <p>Bersama Membangun Pendidikan, Maju untuk Bantul &bull; Database Cloud Terpusat</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="cloud-badge-btn" id="cloudStatusBtn" onclick="openConfigModal()" title="Klik untuk mengatur URL Google Apps Script">
+                <span id="cloudDot">🟢</span> <span id="cloudStatusText">Cloud Aktif</span>
+            </button>
+            <svg class="konoha-symbol" viewBox="0 0 100 100" title="Lambang Konoha" aria-label="Konoha Emblem">
+                <path d="M 50 12 C 43 12 37 14 31 18 C 22 25 17 35 17 46 C 17 63 31 77 48 77 C 65 77 79 63 79 46 C 79 36 74 27 66 21 C 59 16 53 14 49 14 C 47 14 45 14 43 15 C 38 17 33 22 30 28 C 27 34 26 41 27 48 C 29 59 38 68 49 68 C 60 68 69 59 69 48 C 69 42 66 36 62 33 C 58 29 53 28 48 29 C 43 30 39 34 38 39 C 37 43 38 48 41 51 C 44 54 48 55 52 54 C 55 53 57 50 57 47 C 57 44 55 42 52 42 C 50 42 49 43 48 45 C 47 46 46 45 46 44 C 46 42 48 40 50 39 C 53 38 56 40 58 43 C 60 47 58 52 54 55 C 49 57 43 56 39 51 C 35 46 34 40 36 34 C 38 27 44 22 51 21 C 57 20 63 22 68 27 C 73 32 76 39 76 47 C 76 61 64 73 49 73 C 34 73 22 61 22 46 C 22 36 27 27 35 21 C 40 17 46 15 52 15 C 64 15 76 22 82 32 C 86 38 88 44 88 51 C 88 57 87 63 84 69 C 83 72 85 75 88 74 C 91 73 97 66 98 60 C 99 53 98 47 96 41 C 89 24 73 12 55 12 L 50 12 Z"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- SIDEBAR BAB 1 - 6 LENGKAP -->
+        <aside class="sidebar">
+            <div class="sidebar-menu-list">
+                
+                <!-- 0. Beranda -->
+                <button class="nav-item" onclick="openBeranda(this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        <span>Beranda</span>
+                    </div>
+                </button>
+
+                <!-- 1. Rekapitulasi BMD -->
+                <button class="nav-item active" onclick="toggleSub('sub1', this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        <span>1 &nbsp; Rekapitulasi BMD DIKPORA 2026</span>
+                    </div>
+                    <span class="chevron-icon">⌄</span>
+                </button>
+                <div id="sub1" class="sub-menu">
+                    <button class="sub-item" onclick="openModuleCategory('cat_1', '1. Laporan Belanja Modal & Aset Kantor Dikpora', 'EXCEL', this)">📁 Belanja Modal & Aset Kantor</button>
+                </div>
+
+                <!-- 2. REALISASI & PERINCIAN BELANJA MODAL DARI BOS -->
+                <button class="nav-item active" onclick="toggleSub('sub2', this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        <span>2 &nbsp; Realisasi & Perincian Belanja Modal BOS</span>
+                    </div>
+                    <span class="chevron-icon">⌄</span>
+                </button>
+                <div id="sub2" class="sub-menu">
+                    <div class="sub-group-title">🏫 a. BOS SD Negeri:</div>
+                    <button class="sub-item sub-item-nested active" onclick="openModuleCategory('sd_realisasi', '2a. BOS SD Negeri - Laporan Realisasi Belanja Modal', 'EXCEL', this)">
+                        <span>📊 Realisasi Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('sd_perincian', '2a. BOS SD Negeri - Laporan Perincian Belanja Modal', 'EXCEL', this)">
+                        <span>📋 Perincian Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <div class="sub-group-title">🏫 b. BOS SMP Negeri:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('smp_realisasi', '2b. BOS SMP Negeri - Laporan Realisasi Belanja Modal', 'EXCEL', this)">
+                        <span>📊 Realisasi Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('smp_perincian', '2b. BOS SMP Negeri - Laporan Perincian Belanja Modal', 'EXCEL', this)">
+                        <span>📋 Perincian Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <div class="sub-group-title">🏫 c. BOS TK Negeri:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('tk_realisasi', '2c. BOS TK Negeri - Laporan Realisasi Belanja Modal', 'EXCEL', this)">
+                        <span>📊 Realisasi Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('tk_perincian', '2c. BOS TK Negeri - Laporan Perincian Belanja Modal', 'EXCEL', this)">
+                        <span>📋 Perincian Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <div class="sub-group-title">🏫 d. BOS SKB:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('skb_realisasi', '2d. BOS SKB - Laporan Realisasi Belanja Modal', 'EXCEL', this)">
+                        <span>📊 Realisasi Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('skb_perincian', '2d. BOS SKB - Laporan Perincian Belanja Modal', 'EXCEL', this)">
+                        <span>📋 Perincian Belanja Modal</span>
+                        <span style="font-size:0.6rem; background:#0f9d58; color:#fff; padding:1px 4px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <div style="margin-top:6px;"></div>
+                    <button class="sub-item" onclick="openModuleCategory('cat_2e', '2e. Sumber Lain yang Sah Sekolah', 'EXCEL', this)">
+                        <span>e. Sumber Lain yang Sah Sekolah</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:4px;">Drive/XLS</span>
+                    </button>
+                </div>
+
+                <!-- 3. LAPORAN PEROLEHAN DARI SUMBER LAIN (REVITALISASI TK, SD, SMP, SKB DENGAN PKS, BAST & DATA) -->
+                <button class="nav-item active" onclick="toggleSub('sub3', this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        <span>3 &nbsp; Laporan Perolehan dari Sumber Lain</span>
+                    </div>
+                    <span class="chevron-icon">⌄</span>
+                </button>
+                <div id="sub3" class="sub-menu">
+                    <button class="sub-item" onclick="openModuleCategory('cat_3a', '3a. Perolehan Sumber Lain - Kantor Dikpora (Data)', 'EXCEL', this)">
+                        <span>a. Kantor Dikpora (Data)</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:4px;">Drive/XLS</span>
+                    </button>
+                    
+                    <!-- b. Revitalisasi TK Negeri -->
+                    <div class="sub-group-title">🏢 b. Revitalisasi TK Negeri:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_pks_tk', '3b. Revitalisasi TK Negeri - PKS', 'PDF', this)">
+                        <span>📄 PKS</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_bast_tk', '3b. Revitalisasi TK Negeri - Berita Acara Serah Terima (BAST)', 'PDF', this)">
+                        <span>📑 BAST</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_data_tk', '3b. Revitalisasi TK Negeri - Data Penerima', 'EXCEL', this)">
+                        <span>📊 Data Penerima</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <!-- c. Revitalisasi SD Negeri -->
+                    <div class="sub-group-title" style="margin-top:4px;">🏢 c. Revitalisasi SD Negeri:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_pks_sd', '3c. Revitalisasi SD Negeri - PKS', 'PDF', this)">
+                        <span>📄 PKS</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_bast_sd', '3c. Revitalisasi SD Negeri - Berita Acara Serah Terima (BAST)', 'PDF', this)">
+                        <span>📑 BAST</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_data_sd', '3c. Revitalisasi SD Negeri - Data Penerima', 'EXCEL', this)">
+                        <span>📊 Data Penerima</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <!-- d. Revitalisasi SMP Negeri -->
+                    <div class="sub-group-title" style="margin-top:4px;">🏢 d. Revitalisasi SMP Negeri:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_pks_smp', '3d. Revitalisasi SMP Negeri - PKS', 'PDF', this)">
+                        <span>📄 PKS</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_bast_smp', '3d. Revitalisasi SMP Negeri - Berita Acara Serah Terima (BAST)', 'PDF', this)">
+                        <span>📑 BAST</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_data_smp', '3d. Revitalisasi SMP Negeri - Data Penerima', 'EXCEL', this)">
+                        <span>📊 Data Penerima</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+
+                    <!-- e. Revitalisasi SKB -->
+                    <div class="sub-group-title" style="margin-top:4px;">🏢 e. Revitalisasi SKB:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_pks_skb', '3e. Revitalisasi SKB - PKS', 'PDF', this)">
+                        <span>📄 PKS</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_bast_skb', '3e. Revitalisasi SKB - Berita Acara Serah Terima (BAST)', 'PDF', this)">
+                        <span>📑 BAST</span>
+                        <span style="font-size:0.65rem; background:#e11d48; color:#fff; padding:1px 5px; border-radius:3px;">Drive/PDF</span>
+                    </button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('revit_data_skb', '3e. Revitalisasi SKB - Data Penerima', 'EXCEL', this)">
+                        <span>📊 Data Penerima</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:3px;">Drive/XLS</span>
+                    </button>
+                </div>
+
+                <!-- 4. BUKTI PENAMBAHAN & PENGURANGAN BMD -->
+                <button class="nav-item active" onclick="toggleSub('sub4', this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+                        <span>4 &nbsp; Bukti Penambahan & Pengurangan BMD</span>
+                    </div>
+                    <span class="chevron-icon">⌄</span>
+                </button>
+                <div id="sub4" class="sub-menu">
+                    <div class="sub-group-title">📥 Penambahan BMD:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('bab4_4a_peralatan', '4a. Bukti Penambahan BMD - Peralatan', 'PDF', this)">📁 Folder Peralatan</button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('bab4_4a_gedung', '4a. Bukti Penambahan BMD - Gedung', 'PDF', this)">🏢 Folder Gedung</button>
+
+                    <div class="sub-group-title" style="margin-top: 6px;">📤 Pengurangan BMD:</div>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('bab4_4b_peralatan', '4b. Bukti Pengurangan BMD - Peralatan', 'PDF', this)">📁 Folder Peralatan</button>
+                    <button class="sub-item sub-item-nested" onclick="openModuleCategory('bab4_4b_gedung', '4b. Bukti Pengurangan BMD - Gedung', 'PDF', this)">🏢 Folder Gedung</button>
+                </div>
+
+                <!-- 5. CALK -->
+                <button class="nav-item active" onclick="toggleSub('sub5', this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        <span>5 &nbsp; CALK (Catatan atas Laporan Keuangan)</span>
+                    </div>
+                    <span class="chevron-icon">⌄</span>
+                </button>
+                <div id="sub5" class="sub-menu">
+                    <button class="sub-item" onclick="openModuleCategory('calk_5a', '5a. CALK - Kantor Dikpora', 'EXCEL', this)">a. &nbsp; Kantor Dikpora (Drive/XLS)</button>
+                    <button class="sub-item" onclick="openModuleCategory('calk_5b', '5b. CALK - Sekolah', 'EXCEL', this)">b. &nbsp; Sekolah (Drive/XLS)</button>
+                </div>
+
+                <!-- 6. SERBA-SERBI BMD DIKPORA -->
+                <button class="nav-item active" onclick="toggleSub('sub6', this)">
+                    <div class="nav-left">
+                        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.04 3H5.81l1.04-3zM19 17H5v-4.66l.12-.34h13.77l.11.34V17zM7.5 15c.83 0 1.5-.67 1.5-1.5S8.33 12 7.5 12 6 12.67 6 13.5 6.67 15 7.5 15zm9 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5z"/></svg>
+                        <span>6 &nbsp; Serba-Serbi BMD DIKPORA</span>
+                    </div>
+                    <span class="chevron-icon">⌄</span>
+                </button>
+                <div id="sub6" class="sub-menu">
+                    <button class="sub-item" onclick="openModuleCategory('serba_kendaraan', '6a. Serba-Serbi BMD - Pengguna Kendaraan Dinas', 'PDF', this)">
+                        <span>🚗 Pengguna Kendaraan Dinas</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:4px;">Drive</span>
+                    </button>
+                    <button class="sub-item" onclick="openModuleCategory('serba_peralatan', '6b. Serba-Serbi BMD - Pengguna Peralatan dan Mesin', 'EXCEL', this)">
+                        <span>⚙️ Pengguna Peralatan & Mesin</span>
+                        <span style="font-size:0.65rem; background:#0f9d58; color:#fff; padding:1px 5px; border-radius:4px;">Drive</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="sidebar-dikpora-badge-container">
+                <img class="badge-logo-img" 
+                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Seal_of_Bantul_Regency.svg/500px-Seal_of_Bantul_Regency.svg.png" 
+                     alt="Lambang Dikpora Bantul"
+                     onerror="fallbackLogoBadge(this)">
+                <div class="badge-text-title">DINAS DIKPORA</div>
+                <div class="badge-text-subtitle">Kabupaten Bantul</div>
+                <div class="badge-divider"></div>
+                <div class="badge-text-year">2026</div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="content-card" id="mainContentArea">
+
+            <div class="section-header">
+                <svg class="section-folder-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                <div class="section-title">
+                    <h3 id="currentCategoryTitle">2a. BOS SD Negeri - Laporan Realisasi Belanja Modal</h3>
+                    <p id="currentCategorySubtitle">Semua dokumen tersimpan secara online di Google Sheets Dikpora</p>
+                </div>
+            </div>
+
+            <!-- FOLDER TAB BAR BAB 4 -->
+            <div class="folder-tab-bar" id="bab4TabBar" style="display:none;">
+                <button class="folder-tab-btn active" id="tabBtnPeralatan" onclick="switchBab4Tab('peralatan')">📁 Folder Peralatan</button>
+                <button class="folder-tab-btn" id="tabBtnGedung" onclick="switchBab4Tab('gedung')">🏢 Folder Gedung</button>
+            </div>
+
+            <div class="info-box">
+                <svg class="info-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <div class="info-content">
+                    <h5>Sistem Database Cloud Google Terpusat</h5>
+                    <ul>
+                        <li><b>Akses Bersama:</b> Siapa saja yang membuka portal ini dapat melihat dan membaca berkas yang telah ditautkan.</li>
+                        <li><b>Google Drive:</b> Klik tombol hijau <b>"🔗 Tambah Link Google Drive"</b> untuk menautkan link spreadsheet atau file PDF ke database bersama.</li>
+                        <li><b>Sinkronisasi Otomatis:</b> Klik tombol <b>"🔄 Sinkron Data"</b> kapan saja untuk memuat berkas baru yang diunggah oleh sekolah/rekan lain.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ACTION BAR -->
+            <div class="action-bar">
+                <div class="action-left">
+                    <button class="btn-upload-drive" onclick="openDriveModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5L7.71 3.5zm4.87 0l-3.42 6h13.69l-3.42-6H12.58zM8.86 16.5l3.43 6h10.56l-3.43-6H8.86z"/>
+                        </svg>
+                        🔗 Tambah Link Google Drive (Excel / PDF)
+                    </button>
+                    <button class="btn-sync-cloud" onclick="refreshFromCloud()" title="Muat ulang data terbaru dari Google Spreadsheet">
+                        🔄 Sinkron Data
+                    </button>
+                </div>
+                <div class="action-right-stats" id="currentStatsInfo">
+                    Total: 0 dokumen
+                </div>
+            </div>
+
+            <!-- GRID DOKUMEN -->
+            <div class="document-grid" id="mainDocumentGrid"></div>
+
+        </main>
+    </div>
+
+    <!-- MODAL POPUP INPUT GOOGLE DRIVE -->
+    <div class="modal-overlay" id="driveModalOverlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h4>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#34a853">
+                        <path d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5L7.71 3.5zm4.87 0l-3.42 6h13.69l-3.42-6H12.58zM8.86 16.5l3.43 6h10.56l-3.43-6H8.86z"/>
+                    </svg>
+                    Tautkan Dokumen ke Database Bersama
+                </h4>
+                <button type="button" class="modal-close-btn" onclick="closeDriveModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Judul / Nama Dokumen :</label>
+                    <input type="text" id="driveDocName" class="form-control" placeholder="Contoh: BAST Revitalisasi SD Negeri 2026.pdf">
+                </div>
+
+                <div class="form-group">
+                    <label>Tautan Link Google Drive (Spreadsheet / Excel / PDF) :</label>
+                    <input type="url" id="driveDocUrl" class="form-control" placeholder="https://drive.google.com/file/d/... atau https://docs.google.com/spreadsheets/d/...">
+                    <small style="color:#486581; font-size:0.72rem; margin-top:2px;">Pastikan setelan berbagi tautan di Google Drive disetel ke <b>"Siapa saja yang memiliki link"</b>.</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jenis Dokumen :</label>
+                        <select id="driveDocType" class="form-control">
+                            <option value="EXCEL">Excel / Google Sheets (.xlsx)</option>
+                            <option value="PDF">Dokumen PDF (.pdf)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Keterangan / Sekolah / Pengunggah :</label>
+                        <input type="text" id="driveDocMeta" class="form-control" placeholder="Contoh: SD Negeri 1 Bantul">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeDriveModal()">Batal</button>
+                <button type="button" class="btn-save-drive" id="btnSaveDoc" onclick="saveDriveDocument()">Simpan Dokumen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PENGATURAN URL CLOUD APPS SCRIPT -->
+    <div class="modal-overlay" id="configModalOverlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h4>⚙️ Pengaturan URL Google Apps Script</h4>
+                <button type="button" class="modal-close-btn" onclick="closeConfigModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.8rem; color:#475569; line-height:1.4;">
+                    URL Google Apps Script sudah terpasang secara permanen:
+                </p>
+                <div class="form-group">
+                    <label>URL Web App (/exec) :</label>
+                    <input type="url" id="inputAppsScriptUrl" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeConfigModal()">Tutup</button>
+                <button type="button" class="btn-save-drive" onclick="saveConfigUrl()">Simpan & Hubungkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PRATINJAU EMBED GOOGLE DRIVE -->
+    <div class="preview-modal-overlay" id="previewModalOverlay">
+        <div class="preview-modal-box">
+            <div class="preview-modal-header">
+                <h4 id="previewModalTitle">Pratinjau Dokumen</h4>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <a id="previewExternalLinkBtn" href="#" target="_blank" style="background:#0284c7; color:white; text-decoration:none; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:700;">Buka di Tab Baru ↗</a>
+                    <button type="button" class="modal-close-btn" onclick="closePreviewModal()">&times;</button>
+                </div>
+            </div>
+            <div class="preview-iframe-wrapper">
+                <iframe id="previewIframe" src="about:blank" allow="autoplay"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- WIDGET KONTROL BACKGROUND -->
+    <div class="bg-control-widget">
+        <span>🏞️ Posisi Desa:</span>
+        <select onchange="adjustBackgroundFocus(this.value)" title="Atur fokus vertikal background">
+            <option value="65%" selected>Patung & Rumah (Rekomendasi)</option>
+            <option value="78%">Rumah Desa Lebih Rendah</option>
+            <option value="52%">Tengah Patung Hokage</option>
+            <option value="40%">Patung Lebih Tinggi</option>
+        </select>
+        <input type="file" id="localBgInput" accept="image/*" style="display:none;" onchange="loadLocalBackground(event)">
+        <button type="button" onclick="document.getElementById('localBgInput').click()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:2px 8px;border-radius:6px;cursor:pointer;font-size:0.75rem;">Ganti File</button>
+    </div>
+
+    <footer>
+        &copy; 2026 Dinas Pendidikan, Kepemudaan, dan Olahraga Kabupaten Bantul &bull; Sistem Informasi Laporan BMD & Realisasi Anggaran Berbasis Cloud
+    </footer>
+
+    <script>
+        // PELINDUNG STORAGE AMAN
+        function safeGet(key) {
+            try { return localStorage.getItem(key); } catch (e) { return null; }
+        }
+        function safeSet(key, val) {
+            try { localStorage.setItem(key, val); } catch (e) {}
+        }
+
+        // =========================================================================
+        // URL GOOGLE APPS SCRIPT ASLI ANDA (TERINTEGRASI PERMANEN)
+        // =========================================================================
+        let APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyS07TssrKfQlpazGoILlOfK5Ut7rhW22kJtnxrEWTL8Swg_PAhT_CtjjqSUKrwD0k/exec";
+
+        const SAVED_URL = safeGet('DIKPORA_APPS_SCRIPT_URL');
+        if (SAVED_URL) {
+            APPS_SCRIPT_URL = SAVED_URL;
+        }
+
+        const STORAGE_KEY = 'DIKPORA_BANTUL_BMD_2026_STORE';
+        let portalDatabase = {};
+
+        let currentCategoryKey = 'sd_realisasi';
+        let currentDefaultType = 'EXCEL';
+
+        // 1. INIT
+        function initPortalStorage() {
+            try {
+                const stored = safeGet(STORAGE_KEY);
+                if (stored) portalDatabase = JSON.parse(stored);
+            } catch (e) {}
+
+            renderDocumentGrid();
+            updateCloudStatusUI();
+
+            refreshFromCloud();
+        }
+
+        // 2. REFRESH CLOUD VIA JSONP
+        function refreshFromCloud() {
+            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("MASUKKAN_ID_DEPLOYMENT")) {
+                updateCloudStatusUI(false, "URL Cloud Belum Diatur");
+                return;
+            }
+
+            updateCloudStatusUI(true, "Memuat Data...");
+
+            const scriptId = 'jsonp_cloud_loader';
+            const oldScript = document.getElementById(scriptId);
+            if (oldScript) oldScript.remove();
+
+            window.handleCloudResponse = function(result) {
+                if (result && result.status === 'success' && result.data) {
+                    portalDatabase = result.data;
+                    safeSet(STORAGE_KEY, JSON.stringify(portalDatabase));
+                    renderDocumentGrid();
+                    updateCloudStatusUI(true, "Terhubung ke Cloud");
+                } else {
+                    updateCloudStatusUI(false, "Respon Cloud Gagal");
+                }
+            };
+
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = `${APPS_SCRIPT_URL}?action=getData&callback=handleCloudResponse&_t=${Date.now()}`;
+            script.onerror = function() {
+                updateCloudStatusUI(false, "Cloud Tidak Terjangkau");
+            };
+            document.body.appendChild(script);
+        }
+
+        function updateCloudStatusUI(isOnline = null, label = null) {
+            const btn = document.getElementById('cloudStatusBtn');
+            const dot = document.getElementById('cloudDot');
+            const text = document.getElementById('cloudStatusText');
+
+            const hasValidUrl = APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes("MASUKKAN_ID_DEPLOYMENT");
+            const active = (isOnline !== null) ? isOnline : hasValidUrl;
+
+            if (active) {
+                dot.innerText = "🟢";
+                text.innerText = label || "Cloud Aktif";
+                btn.style.background = "#f0fdf4";
+                btn.style.borderColor = "#86efac";
+                btn.style.color = "#166534";
+            } else {
+                dot.innerText = "🔴";
+                text.innerText = label || "Atur URL Cloud";
+                btn.style.background = "#fef2f2";
+                btn.style.borderColor = "#fca5a5";
+                btn.style.color = "#991b1b";
+            }
+        }
+
+        // 3. SIMPAN DOKUMEN VIA JSONP
+        function saveDriveDocument() {
+            const name = document.getElementById('driveDocName').value.trim();
+            const url = document.getElementById('driveDocUrl').value.trim();
+            const type = document.getElementById('driveDocType').value;
+            const meta = document.getElementById('driveDocMeta').value.trim();
+
+            if (!url) {
+                alert('Silakan masukkan link tautan Google Drive!');
+                return;
+            }
+
+            if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("MASUKKAN_ID_DEPLOYMENT")) {
+                alert('URL Cloud belum diatur! Klik tombol di kanan atas untuk memasukkan URL Web App.');
+                return;
+            }
+
+            const docTitle = name || (type === 'EXCEL' ? 'Laporan Spreadsheet 2026.xlsx' : 'Dokumen PDF 2026.pdf');
+            const docId = `doc_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+            const docDate = new Date().toISOString().split('T')[0];
+
+            const saveBtn = document.getElementById('btnSaveDoc');
+            saveBtn.innerText = "Menyimpan ke Spreadsheet...";
+            saveBtn.disabled = true;
+
+            const scriptId = 'jsonp_save_loader';
+            const oldScript = document.getElementById(scriptId);
+            if (oldScript) oldScript.remove();
+
+            window.handleSaveResponse = function(res) {
+                saveBtn.innerText = "Simpan Dokumen";
+                saveBtn.disabled = false;
+                closeDriveModal();
+
+                if (res && res.status === 'success') {
+                    refreshFromCloud();
+                } else {
+                    alert('Gagal mencatat ke Google Sheets: ' + (res.message || 'Error'));
+                }
+            };
+
+            const queryParams = new URLSearchParams({
+                action: 'addDocument',
+                id: docId,
+                category: currentCategoryKey,
+                name: docTitle,
+                type: type,
+                url: url,
+                meta: meta || 'Google Drive',
+                date: docDate,
+                callback: 'handleSaveResponse',
+                _t: Date.now()
+            });
+
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = `${APPS_SCRIPT_URL}?${queryParams.toString()}`;
+            script.onerror = function() {
+                saveBtn.innerText = "Simpan Dokumen";
+                saveBtn.disabled = false;
+                alert('Gagal menghubungkan ke Google Apps Script saat menyimpan.');
+            };
+            document.body.appendChild(script);
+        }
+
+        // 4. HAPUS DOKUMEN VIA JSONP
+        function deleteDocumentItem(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus dokumen ini dari cloud? Rekan lain tidak akan melihatnya lagi.')) return;
+
+            const scriptId = 'jsonp_del_loader';
+            const oldScript = document.getElementById(scriptId);
+            if (oldScript) oldScript.remove();
+
+            window.handleDelResponse = function(res) {
+                refreshFromCloud();
+            };
+
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = `${APPS_SCRIPT_URL}?action=deleteDocument&documentId=${encodeURIComponent(id)}&callback=handleDelResponse&_t=${Date.now()}`;
+            document.body.appendChild(script);
+        }
+
+        // 5. PARSER PREVIEW
+        function getDrivePreviewUrl(rawUrl) {
+            if (!rawUrl) return '';
+            const fileMatch = rawUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (fileMatch && fileMatch[1]) {
+                return `https://drive.google.com/file/d/${fileMatch[1]}/preview`;
+            }
+            const idMatch = rawUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (idMatch && idMatch[1]) {
+                return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+            }
+            const sheetMatch = rawUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
+            if (sheetMatch && sheetMatch[1]) {
+                return `https://docs.google.com/spreadsheets/d/${sheetMatch[1]}/preview`;
+            }
+            const docMatch = rawUrl.match(/\/document\/d\/([a-zA-Z0-9_-]+)/);
+            if (docMatch && docMatch[1]) {
+                return `https://docs.google.com/document/d/${docMatch[1]}/preview`;
+            }
+            return rawUrl;
+        }
+
+        // 6. RENDER GRID
+        function renderDocumentGrid() {
+            const container = document.getElementById('mainDocumentGrid');
+            const list = portalDatabase[currentCategoryKey] || [];
+            const activeTitle = document.getElementById('currentCategoryTitle').innerText;
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-grid-card">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        <h4>Belum Ada Berkas di Kategori Ini</h4>
+                        <p style="font-weight:800; color:#0284c7; margin: 4px 0 10px; font-size: 0.92rem;">${escapeHtml(activeTitle)}</p>
+                        <p style="font-size:0.8rem; color:#64748b;">Klik tombol hijau <b>"🔗 Tambah Link Google Drive"</b> di atas untuk menambahkan berkas baru ke kategori ini.</p>
+                    </div>
+                `;
+                document.getElementById('currentStatsInfo').innerText = `Total: 0 dokumen`;
+                return;
+            }
+
+            container.innerHTML = list.map(item => {
+                const isExcel = item.type === 'EXCEL';
+                const badgeLabel = isExcel ? 'XLS' : 'PDF';
+                const badgeClass = isExcel ? 'excel-badge' : 'pdf-badge';
+
+                let previewBoxHtml = '';
+                if (isExcel) {
+                    previewBoxHtml = `
+                        <div class="excel-sheet-look">
+                            <div class="excel-sheet-header"><span>DRIVE SHEETS</span><span>2026</span></div>
+                            <div class="excel-sheet-grid">
+                                <div class="header-cell"></div><div class="header-cell"></div><div class="header-cell"></div>
+                                <div></div><div></div><div></div><div></div><div></div><div></div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    previewBoxHtml = `
+                        <div class="doc-paper-look">
+                            <div class="paper-line short accent"></div>
+                            <div class="paper-line"></div>
+                            <div class="paper-line"></div>
+                            <div class="paper-line short"></div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="doc-card">
+                        <div class="doc-preview">
+                            <span class="source-pill-drive">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5L7.71 3.5zm4.87 0l-3.42 6h13.69l-3.42-6H12.58zM8.86 16.5l3.43 6h10.56l-3.43-6H8.86z"/></svg>
+                                Cloud Drive
+                            </span>
+                            ${previewBoxHtml}
+                        </div>
+                        <div class="doc-info">
+                            <div class="doc-header-row">
+                                <div class="${badgeClass}">${badgeLabel}</div>
+                                <div class="doc-title">${escapeHtml(item.name)}</div>
+                            </div>
+                            <div class="doc-meta">${escapeHtml(item.meta || 'Google Drive')}</div>
+                            <div class="doc-actions">
+                                <button type="button" class="btn-act btn-view-drive" onclick="handleOpenPreview('${item.id}')">Lihat</button>
+                                <a href="${item.url}" target="_blank" class="btn-act btn-download">Buka ↗</a>
+                                <button type="button" class="btn-delete btn-act" onclick="deleteDocumentItem('${item.id}')">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('currentStatsInfo').innerText = `Total: ${list.length} dokumen`;
+        }
+
+        // 7. PREVIEW MODAL
+        function handleOpenPreview(id) {
+            const list = portalDatabase[currentCategoryKey] || [];
+            const item = list.find(d => d.id === id);
+            if (!item) return;
+
+            const embedUrl = getDrivePreviewUrl(item.url);
+            document.getElementById('previewModalTitle').innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#34a853"><path d="M7.71 3.5L1.15 15l3.43 6 6.55-11.5L7.71 3.5zm4.87 0l-3.42 6h13.69l-3.42-6H12.58zM8.86 16.5l3.43 6h10.56l-3.43-6H8.86z"/></svg>
+                Pratinjau: ${escapeHtml(item.name)}
+            `;
+            document.getElementById('previewExternalLinkBtn').href = item.url;
+            document.getElementById('previewIframe').src = embedUrl;
+            document.getElementById('previewModalOverlay').style.display = 'flex';
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewIframe').src = 'about:blank';
+            document.getElementById('previewModalOverlay').style.display = 'none';
+        }
+
+        // 8. NAVIGASI KATEGORI
+        function openModuleCategory(catKey, catTitle, defaultType, subBtn) {
+            currentCategoryKey = catKey;
+            currentDefaultType = defaultType || 'EXCEL';
+
+            if (!portalDatabase[catKey]) portalDatabase[catKey] = [];
+
+            // Update status aktif pada tombol
+            document.querySelectorAll('.sub-item').forEach(el => {
+                const onclickAttr = el.getAttribute('onclick') || '';
+                if (el === subBtn || onclickAttr.includes("'" + catKey + "'")) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            document.getElementById('currentCategoryTitle').innerText = catTitle;
+
+            // Kontrol Tab Bab 4 (Peralatan & Gedung)
+            const bab4Tabs = document.getElementById('bab4TabBar');
+            if (bab4Tabs) {
+                if (catKey.startsWith('bab4_')) {
+                    bab4Tabs.style.display = 'flex';
+                    const isGedung = catKey.includes('gedung');
+                    const btnPeralatan = document.getElementById('tabBtnPeralatan');
+                    const btnGedung = document.getElementById('tabBtnGedung');
+                    if (btnPeralatan) btnPeralatan.classList.toggle('active', !isGedung);
+                    if (btnGedung) btnGedung.classList.toggle('active', isGedung);
+                } else {
+                    bab4Tabs.style.display = 'none';
+                }
+            }
+
+            renderDocumentGrid();
+        }
+
+        function switchBab4Tab(folderType) {
+            const isPenambahan = currentCategoryKey.includes('4a');
+            const prefix = isPenambahan ? 'bab4_4a' : 'bab4_4b';
+            const targetKey = `${prefix}_${folderType}`;
+            const targetTitle = `${isPenambahan ? '4a. Bukti Penambahan BMD' : '4b. Bukti Pengurangan BMD'} - Folder ${folderType === 'peralatan' ? 'Peralatan' : 'Gedung'}`;
+            openModuleCategory(targetKey, targetTitle, 'PDF');
+        }
+
+        // FUNGSI TOGGLE MANDIRI
+        function toggleSub(subId, btn) {
+            const sub = document.getElementById(subId);
+            if (!sub) return;
+            const isHidden = sub.classList.contains('hide');
+            const chevron = btn.querySelector('.chevron-icon');
+
+            if (isHidden) {
+                sub.classList.remove('hide');
+                btn.classList.add('active');
+                if (chevron) chevron.textContent = '⌄';
+            } else {
+                sub.classList.add('hide');
+                btn.classList.remove('active');
+                if (chevron) chevron.textContent = '›';
+            }
+        }
+
+        function openBeranda(btn) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            openModuleCategory('sd_realisasi', '2a. BOS SD Negeri - Laporan Realisasi Belanja Modal', 'EXCEL');
+        }
+
+        // 9. MODAL KONTROL
+        function openDriveModal() {
+            document.getElementById('driveDocName').value = '';
+            document.getElementById('driveDocUrl').value = '';
+            document.getElementById('driveDocMeta').value = '';
+            document.getElementById('driveDocType').value = currentDefaultType;
+            document.getElementById('driveModalOverlay').style.display = 'flex';
+        }
+
+        function closeDriveModal() {
+            document.getElementById('driveModalOverlay').style.display = 'none';
+        }
+
+        function openConfigModal() {
+            document.getElementById('inputAppsScriptUrl').value = APPS_SCRIPT_URL;
+            document.getElementById('configModalOverlay').style.display = 'flex';
+        }
+
+        function closeConfigModal() {
+            document.getElementById('configModalOverlay').style.display = 'none';
+        }
+
+        function saveConfigUrl() {
+            const url = document.getElementById('inputAppsScriptUrl').value.trim();
+            if (!url) {
+                alert('Silakan tempel URL Web App dari Google Apps Script');
+                return;
+            }
+            APPS_SCRIPT_URL = url;
+            safeSet('DIKPORA_APPS_SCRIPT_URL', url);
+            closeConfigModal();
+            refreshFromCloud();
+        }
+
+        // 10. LOGO & UTILS
+        function fallbackLogoHeader(img) {
+            img.src = "https://bantulkab.go.id/resource/doc/images/berita/2023/03/4502/Lambang_Daerah.jpg";
+        }
+        function fallbackLogoBadge(img) {
+            img.src = "https://bantulkab.go.id/resource/doc/images/berita/2023/03/4502/Lambang_Daerah.jpg";
+        }
+        function escapeHtml(val) {
+            return String(val).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+        }
+        function adjustBackgroundFocus(val) {
+            document.body.style.backgroundPosition = `center ${val}`;
+        }
+        function loadLocalBackground(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            document.body.style.backgroundImage = `linear-gradient(rgba(7, 43, 66, 0.12), rgba(7, 43, 66, 0.24)), url('${URL.createObjectURL(file)}')`;
+        }
+
+        // INISIALISASI
+        window.addEventListener('DOMContentLoaded', () => {
+            initPortalStorage();
+        });
+    </script>
+</body>
+</html>
